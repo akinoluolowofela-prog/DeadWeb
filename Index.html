@@ -1,0 +1,1852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DEAD — Internet Graveyard</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+    --bg:#070708;
+    --panel:#101012;
+    --panel2:#151518;
+    --border:#29292e;
+    --text:#f4f4f5;
+    --muted:#77777f;
+    --dim:#505057;
+    --red:#ff4d5d;
+}
+
+html{scroll-behavior:smooth}
+
+body{
+    min-height:100vh;
+    background:
+        radial-gradient(circle at 50% -15%,#351117 0,transparent 35%),
+        var(--bg);
+    color:var(--text);
+    font-family:Inter,Arial,Helvetica,sans-serif;
+}
+
+body::-webkit-scrollbar{width:8px}
+body::-webkit-scrollbar-thumb{
+    background:#29292d;
+    border-radius:20px;
+}
+
+header{
+    height:70px;
+    position:sticky;
+    top:0;
+    z-index:100;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 5%;
+    background:rgba(7,7,8,.86);
+    backdrop-filter:blur(18px);
+    border-bottom:1px solid #1d1d21;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:11px;
+    font-size:14px;
+    font-weight:900;
+    letter-spacing:3px;
+}
+
+.logo-box{
+    width:34px;
+    height:34px;
+    display:grid;
+    place-items:center;
+    border-radius:9px;
+    color:var(--red);
+    background:#241014;
+    border:1px solid #51252c;
+}
+
+nav{display:flex;gap:25px}
+
+nav a{
+    color:#68686f;
+    text-decoration:none;
+    font-size:11px;
+    transition:.2s;
+}
+
+nav a:hover{color:#fff}
+
+.hero{
+    max-width:1000px;
+    margin:auto;
+    padding:105px 25px 70px;
+    text-align:center;
+}
+
+.eyebrow{
+    display:inline-block;
+    padding:7px 13px;
+    border:1px solid #51252c;
+    border-radius:50px;
+    color:#ff7783;
+    background:#1d0e11;
+    font-size:9px;
+    font-weight:800;
+    letter-spacing:2px;
+    margin-bottom:25px;
+}
+
+.hero h1{
+    font-size:clamp(65px,12vw,135px);
+    line-height:.82;
+    letter-spacing:-8px;
+    margin-bottom:30px;
+}
+
+.hero h1 span{color:var(--red)}
+
+.hero p{
+    max-width:650px;
+    margin:auto;
+    color:var(--muted);
+    font-size:14px;
+    line-height:1.7;
+}
+
+.search{
+    max-width:650px;
+    margin:32px auto 0;
+}
+
+.search input{
+    width:100%;
+    padding:16px 18px;
+    background:#0f0f11;
+    border:1px solid var(--border);
+    border-radius:10px;
+    color:#fff;
+    outline:none;
+    font-size:13px;
+}
+
+.search input:focus{border-color:#55555b}
+
+.stats{
+    max-width:900px;
+    margin:0 auto 65px;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    border-top:1px solid var(--border);
+    border-bottom:1px solid var(--border);
+}
+
+.stat{
+    padding:25px;
+    text-align:center;
+    border-right:1px solid var(--border);
+}
+
+.stat:last-child{border-right:0}
+
+.stat strong{
+    display:block;
+    font-size:24px;
+    margin-bottom:5px;
+}
+
+.stat span{
+    color:var(--dim);
+    font-size:8px;
+    letter-spacing:1.5px;
+}
+
+main{
+    max-width:1250px;
+    margin:auto;
+    padding:0 25px 100px;
+}
+
+.toolbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.filters{
+    display:flex;
+    gap:7px;
+    overflow-x:auto;
+}
+
+.filter{
+    flex:0 0 auto;
+    padding:9px 13px;
+    background:transparent;
+    border:1px solid transparent;
+    border-radius:7px;
+    color:#68686f;
+    cursor:pointer;
+    font-size:9px;
+    font-weight:800;
+}
+
+.filter:hover{color:#fff}
+
+.filter.active{
+    color:#fff;
+    background:#171719;
+    border-color:#303036;
+}
+
+select{
+    padding:9px 12px;
+    background:#101012;
+    border:1px solid var(--border);
+    border-radius:7px;
+    color:#888;
+    outline:none;
+}
+
+.section-title{
+    display:flex;
+    align-items:end;
+    justify-content:space-between;
+    margin:45px 0 18px;
+}
+
+.section-title h2{font-size:19px}
+
+.section-title span{
+    color:#555;
+    font-size:9px;
+    letter-spacing:1px;
+}
+
+.featured{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.featured-card{
+    position:relative;
+    overflow:hidden;
+    min-height:370px;
+    border:1px solid var(--border);
+    border-radius:14px;
+    background:var(--panel);
+    cursor:pointer;
+    transition:.25s;
+}
+
+.featured-card:hover{
+    transform:translateY(-4px);
+    border-color:#45454b;
+}
+
+.featured-image{
+    width:100%;
+    height:205px;
+    display:block;
+    object-fit:contain;
+    padding:30px;
+    background:radial-gradient(circle,#29292e,#111113 70%);
+}
+
+.featured-content{padding:22px}
+
+.featured-label{
+    color:var(--red);
+    font-size:8px;
+    font-weight:800;
+    letter-spacing:2px;
+}
+
+.featured-content h3{
+    font-size:26px;
+    margin:9px 0;
+}
+
+.featured-content p{
+    color:#777;
+    font-size:12px;
+    line-height:1.6;
+}
+
+.featured-meta{
+    position:absolute;
+    left:22px;
+    right:22px;
+    bottom:18px;
+    padding-top:12px;
+    border-top:1px solid #242428;
+    display:flex;
+    justify-content:space-between;
+    color:#555;
+    font-size:8px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:11px;
+}
+
+.card{
+    position:relative;
+    overflow:hidden;
+    min-height:325px;
+    border:1px solid var(--border);
+    border-radius:12px;
+    background:var(--panel);
+    cursor:pointer;
+    transition:.22s;
+}
+
+.card:hover{
+    transform:translateY(-4px);
+    background:var(--panel2);
+    border-color:#414147;
+}
+
+.card-image{
+    width:100%;
+    height:150px;
+    display:block;
+    object-fit:contain;
+    padding:25px;
+    background:radial-gradient(circle,#29292e,#111113 70%);
+    border-bottom:1px solid #242428;
+}
+
+.card-content{padding:17px}
+
+.card-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:12px;
+}
+
+.card-type{
+    color:#68686f;
+    font-size:8px;
+    font-weight:800;
+    letter-spacing:1.5px;
+}
+
+.card-status{
+    padding:4px 6px;
+    color:#666;
+    background:#171719;
+    border:1px solid #29292d;
+    border-radius:4px;
+    font-size:7px;
+}
+
+.card h3{
+    font-size:16px;
+    margin-bottom:7px;
+}
+
+.card p{
+    color:#6f6f76;
+    font-size:11px;
+    line-height:1.55;
+}
+
+.card-bottom{
+    position:absolute;
+    left:17px;
+    right:17px;
+    bottom:14px;
+    display:flex;
+    justify-content:space-between;
+    padding-top:10px;
+    border-top:1px solid #202024;
+    color:#4e4e54;
+    font-size:9px;
+}
+
+.empty{
+    display:none;
+    padding:80px 20px;
+    text-align:center;
+    color:#555;
+}
+
+.empty h3{
+    color:#aaa;
+    margin-bottom:7px;
+}
+
+.timeline{
+    margin:30px 0 70px;
+    padding-left:25px;
+    border-left:1px solid #29292d;
+}
+
+.timeline-item{
+    position:relative;
+    padding-bottom:32px;
+}
+
+.timeline-item::before{
+    content:"";
+    position:absolute;
+    left:-30px;
+    top:3px;
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:#36363b;
+    border:2px solid var(--bg);
+}
+
+.timeline-year{
+    color:var(--red);
+    font-size:9px;
+    font-weight:800;
+    margin-bottom:6px;
+}
+
+.timeline-item h3{
+    font-size:15px;
+    margin-bottom:5px;
+}
+
+.timeline-item p{
+    color:#666;
+    font-size:11px;
+    line-height:1.5;
+}
+
+.modal{
+    position:fixed;
+    inset:0;
+    z-index:200;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:rgba(0,0,0,.82);
+    backdrop-filter:blur(12px);
+}
+
+.modal.show{display:flex}
+
+.modal-box{
+    width:100%;
+    max-width:650px;
+    overflow:hidden;
+    position:relative;
+    border:1px solid #35353b;
+    border-radius:16px;
+    background:#111113;
+}
+
+.modal-image{
+    width:100%;
+    height:250px;
+    object-fit:contain;
+    padding:30px;
+    background:radial-gradient(circle,#29292e,#111113 70%);
+}
+
+.close{
+    position:absolute;
+    top:15px;
+    right:15px;
+    z-index:2;
+    width:34px;
+    height:34px;
+    border:0;
+    border-radius:50%;
+    background:rgba(0,0,0,.75);
+    color:#fff;
+    font-size:20px;
+    cursor:pointer;
+}
+
+.modal-content{padding:28px}
+
+.modal-type{
+    color:var(--red);
+    font-size:8px;
+    font-weight:800;
+    letter-spacing:2px;
+}
+
+.modal h2{
+    font-size:31px;
+    margin:9px 0;
+}
+
+.modal-description{
+    color:#818188;
+    font-size:13px;
+    line-height:1.7;
+    margin-bottom:24px;
+}
+
+.modal-info{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    border-top:1px solid #252528;
+    border-bottom:1px solid #252528;
+}
+
+.info{
+    padding:15px;
+    text-align:center;
+    border-right:1px solid #252528;
+}
+
+.info:last-child{border-right:0}
+
+.info strong{
+    display:block;
+    font-size:13px;
+    margin-bottom:4px;
+}
+
+.info span{
+    color:#555;
+    font-size:7px;
+    letter-spacing:1px;
+}
+
+footer{
+    padding:50px 20px;
+    border-top:1px solid #1d1d20;
+    color:#414146;
+    text-align:center;
+    font-size:8px;
+    letter-spacing:2px;
+}
+
+@media(max-width:1000px){
+    .grid{grid-template-columns:repeat(3,1fr)}
+}
+
+@media(max-width:750px){
+    nav{display:none}
+    .hero{padding-top:75px}
+    .stats{grid-template-columns:repeat(2,1fr)}
+    .stat:nth-child(2){border-right:0}
+    .featured{grid-template-columns:1fr}
+    .grid{grid-template-columns:repeat(2,1fr)}
+    .toolbar{
+        flex-direction:column;
+        align-items:stretch;
+    }
+}
+
+@media(max-width:480px){
+    .hero h1{
+        font-size:58px;
+        letter-spacing:-5px;
+    }
+
+    .grid{grid-template-columns:1fr}
+
+    .modal-info{grid-template-columns:1fr}
+
+    .info{
+        border-right:0;
+        border-bottom:1px solid #252528;
+    }
+
+    .info:last-child{border-bottom:0}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">
+        <div class="logo-box">D</div>
+        DEAD
+    </div>
+
+    <nav>
+        <a href="#archive">Archive</a>
+        <a href="#timeline">Timeline</a>
+        <a href="#about">About</a>
+    </nav>
+</header>
+
+
+<section class="hero">
+
+    <div class="eyebrow">THE INTERNET GRAVEYARD</div>
+
+    <h1>
+        DEAD<br>
+        <span>WEB.</span>
+    </h1>
+
+    <p>
+        Games, websites, apps, products,
+        companies and pieces of internet culture
+        that disappeared from the digital world.
+    </p>
+
+    <div class="search">
+        <input
+            id="search"
+            type="text"
+            placeholder="Search the archive..."
+            oninput="filterCards()"
+        >
+    </div>
+
+</section>
+
+
+<div class="stats">
+
+    <div class="stat">
+        <strong id="totalCount">24</strong>
+        <span>ARCHIVED</span>
+    </div>
+
+    <div class="stat">
+        <strong>7</strong>
+        <span>CATEGORIES</span>
+    </div>
+
+    <div class="stat">
+        <strong>1994</strong>
+        <span>OLDEST ENTRY</span>
+    </div>
+
+    <div class="stat">
+        <strong>2021</strong>
+        <span>LATEST ENTRY</span>
+    </div>
+
+</div>
+
+
+<main id="archive">
+
+<div class="toolbar">
+
+    <div class="filters">
+
+        <button class="filter active"
+            data-filter="all"
+            onclick="setFilter(this)">ALL</button>
+
+        <button class="filter"
+            data-filter="game"
+            onclick="setFilter(this)">GAMES</button>
+
+        <button class="filter"
+            data-filter="website"
+            onclick="setFilter(this)">WEBSITES</button>
+
+        <button class="filter"
+            data-filter="app"
+            onclick="setFilter(this)">APPS</button>
+
+        <button class="filter"
+            data-filter="product"
+            onclick="setFilter(this)">PRODUCTS</button>
+
+        <button class="filter"
+            data-filter="culture"
+            onclick="setFilter(this)">CULTURE</button>
+
+        <button class="filter"
+            data-filter="software"
+            onclick="setFilter(this)">SOFTWARE</button>
+
+    </div>
+
+    <select id="sort" onchange="sortCards()">
+        <option value="default">Sort</option>
+        <option value="az">A — Z</option>
+        <option value="za">Z — A</option>
+        <option value="old">Oldest</option>
+        <option value="new">Newest</option>
+    </select>
+
+</div>
+
+
+<div class="section-title">
+    <h2>Featured Graves</h2>
+    <span>THE ONES WE REMEMBER</span>
+</div>
+
+
+<div class="featured">
+
+<div
+    class="featured-card"
+    onclick="openCard(this)"
+    data-name="Club Penguin"
+    data-type="game"
+    data-start="2005"
+    data-year="2017"
+    data-status="CLOSED"
+    data-description="The virtual world where millions of players created penguin avatars, played minigames and socialized."
+>
+
+<img
+    class="featured-image"
+    src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Club_Penguin_Logo_2012_-_2017.png"
+    alt="Club Penguin"
+>
+
+<div class="featured-content">
+<span class="featured-label">FEATURED</span>
+<h3>Club Penguin</h3>
+<p>
+A virtual world where millions of players
+created penguins, played minigames and
+socialized.
+</p>
+</div>
+
+<div class="featured-meta">
+<span>GAME</span>
+<span>2005 — 2017</span>
+</div>
+
+</div>
+
+
+<div
+    class="featured-card"
+    onclick="openCard(this)"
+    data-name="Vine"
+    data-type="website"
+    data-start="2013"
+    data-year="2017"
+    data-status="CLOSED"
+    data-description="The six-second video platform that became a defining part of early-2010s internet culture."
+>
+
+<img
+    class="featured-image"
+    src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Vine_logo.svg"
+    alt="Vine"
+>
+
+<div class="featured-content">
+<span class="featured-label">FEATURED</span>
+<h3>Vine</h3>
+<p>
+Six-second looping videos turned Vine
+into one of the most recognizable
+platforms of its era.
+</p>
+</div>
+
+<div class="featured-meta">
+<span>WEBSITE</span>
+<span>2013 — 2017</span>
+</div>
+
+</div>
+
+</div>
+
+
+<div class="section-title">
+    <h2>The Archive</h2>
+    <span id="resultCount">24 ENTRIES</span>
+</div>
+
+
+<div class="grid" id="grid">
+
+
+<!-- 01 -->
+
+<article class="card"
+data-name="AIM"
+data-type="app"
+data-start="1997"
+data-year="2017"
+data-status="CLOSED"
+data-description="AOL Instant Messenger was one of the defining instant messaging services of the early web."
+onclick="openCard(this)">
+
+<img class="card-image"
+src="https://commons.wikimedia.org/wiki/Special:Redirect/file/AIM_logo.svg"
+alt="AIM">
+
+<div class="card-content">
+<div class="card-top">
+<span class="card-type">APP</span>
+<span class="card-status">CLOSED</span>
+</div>
+
+<h3>AIM</h3>
+<p>One of the defining instant messaging services of the early web.</p>
+
+<div class="card-bottom">
+<span>1997</span><span>2017</span>
+</div>
+</div>
+</article>
+
+
+<!-- 02 -->
+
+<article class="card"
+data-name="Adobe Director"
+data-type="software"
+data-start="1987"
+data-year="2017"
+data-status="ENDED"
+data-description="Adobe Director was a multimedia authoring platform used for interactive CD-ROMs and early web experiences."
+onclick="openCard(this)">
+
+<img class="card-image"
+src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Adobe_Director_v11_icon.png"
+alt="Adobe Director">
+
+<div class="card-content">
+<div class="card-top">
+<span class="card-type">SOFTWARE</span>
+<span class="card-status">ENDED</span>
+</div>
+
+<h3>Adobe Director</h3>
+<p>Multimedia authoring software used for interactive experiences.</p>
+
+<div class="card-bottom">
+<span>1987</span><span>2017</span>
+</div>
+</div>
+</article>
+
+
+<!-- 03 -->
+
+<article class="card"
+data-name="Bebo"
+data-type="website"
+data-start="2005"
+data-year="2013"
+data-status="CLOSED"
+data-description="A social networking site that became particularly popular in the UK and Ireland."
+onclick="openCard(this)">
+
+<img class="card-image"
+src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Bebo_Logo_new.png"
+alt="Bebo">
+
+<div class="card-content">
+<div class="card-top">
+<span class="card-type">WEBSITE</span>
+<span class="card-status">CLOSED</span>
+</div>
+
+<h3>Bebo</h3>
+<p>Social networking site that became huge in the mid-2000s.</p>
+
+<div class="card-bottom">
+<span>2005</span><span>2013</span>
+</div>
+</div>
+</article>
+
+
+<!-- 04 -->
+
+<article class="card"
+data-name="Club Penguin"
+data-type="game"
+data-start="2005"
+data-year="2017"
+data-status="CLOSED"
+data-description="A virtual world built around penguin avatars, minigames and online communities."
+onclick="openCard(this)">
+
+<img class="card-image"
+src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Club_Penguin_Logo_2012_-_2017.png"
+alt="Club Penguin">
+
+<div class="card-content">
+<div class="card-top">
+<span class="card-type">GAME</span>
+<span class="card-status">CLOSED</span>
+</div>
+
+<h3>Club Penguin</h3>
+<p>The classic penguin-filled virtual world.</p>
+
+<div class="card-bottom">
+<span>2005</span><span>2017</span>
+</div>
+</div>
+</article>
+
+
+<!-- 05 -->
+
+<article class="card"
+data-name="Flappy Bird"
+data-type="game"
+data-start="2013"
+data-year="2014"
+data-status="REMOVED"
+data-description="The famously difficult mobile game that became a worldwide phenomenon."
+onclick="openCard(this)">
+
+<img class="card-image"
+src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Flappy_Bird_logo.png"
+alt="Flappy Bird">
+
+<div class="card-content">
+<div class="card-top">
+<span class="card-type">GAME</span>
+<span class="card-status">REMOVED</span>
+</div>
+
+<h3>Flappy Bird</h3>
+<p>A tiny mobile game with an enormous cultural footprint.</p>
+
+<div class="card-bottom">
+<span>2013</span><span>2014</span>
+</div>
+</div>
+</article>
+
+
+<!-- 06 -->
+
+<article class="card"
+data-name="Google Allo"
+data-type="app"
+data-start="2016"
+data-year="2019"
+data-status="CLOSED"
+data-description="Google's messaging application, discontinued after a short run."
+onclick="openCard(this)">
+
+<img class="card-image"
+src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Google_Allo_Logo.png"
+alt="Google Allo">
+
+<div class="card-content">
+<div class="card-top">
+<span class="card-type">APP</span>
+<span class="card-status">CLOSED</span>
+</div>
+
+<h3>Google Allo</h3>
+<p>Google's short-lived messaging application.</p>
+
+<div class="card-bottom">
+<span>2016</span><span>2019</span>
+</div>
+</div>
+</article>
+
+
+<!-- 07 -->
+
+<article class="card"
+data-name="Google Buzz"
+data-type="website"
+data-start="2010"
+data-year="2011"
+data-status="CLOSED"
+data-description="Google's social networking and messaging service integrated into Gmail."
+onclick="openCard(this)">
+
+<img class="card-image"
+src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Google_Buzz_logo_%282010-2011%29.png"
+alt="Google Buzz">
+
+<div class="card-content">
+<div class="card-top">
+<span class="card-type">WEBSITE</span>
+<span class="card-status">CLOSED</span>
+</div>
+
+<h3>Google Buzz</h3>
+<p>A social layer that lived inside Gmail.</p>
+
+<div class="card-bottom">
+<span>2010</span><span>2011</span>
+</div>
+</div>
+</article>
+
+
+<!-- 08 -->
+
+<article class="card"
+data-name="Google+"
+data-type="website"
+data-start="2011"
+data-year="2019"
+data-status="CLOSED"
+data-description="Google's social networking service."
+onclick="openCard(this)">
+
+<img class="card-image"
+src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Google_Plus_logo_%282015-2019%29.svg"
+alt="Google Plus">
+
+<div class="card-content">
+<div class="card-top">
+<span class="card-type">WEBSITE</span>
+<span class="card-status">CLOSED</span>
+</div>
+
+<h3>Google+</h3>
+<p>Google's attempt at a major social network.</p>
+
+<div class="card-bottom">
+<span>2011</span><span>2019</span>
+</div>
+</div>
+</article>
+
+
+<!-- 09 -->
+
+<article class="card"
+data-name="Google Reader"
+data-type="website"
+data-start="2005"
+data-year="2013"
+data-status="CLOSED"
+data-description="Google's RSS and feed reader, widely used by people who followed websites through feeds."
+onclick="openCard(this)">
+
+<img class="card-image"
+src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Google_Reader_logo.png"
+alt="Google Reader">
+
+<div class="card-content">
+<div class="card-top">
+<span class="card-type">WEBSITE</span>
+<span class="card-status">CLOSED</span>
+</div>
+
+<h3>Google Reader</h3>
+<p>A beloved RSS reader for keeping up with the web.</p>
+
+<div class="card-bottom">
+<span>2005</span><span>2013</span>
+</div>
+</div>
+</article>
+
+
+<!-- 10 -->
+
+<article class="card"
+data-name="Google Wave"
+data-type="website"
+data-start="2009"
+data-year="2012"
+data-status="ENDED"
+data-description="Google's ambitious collaborative communication platform."
+onclick="openCard(this)">
+
+<img class="card-image"
+src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Google_wave_logo.png"
+alt="Google Wave">
+
+<div class="card-content">
+<div class="card-top">
+<span class="card-type">WEBSITE</span>
+<span class="card-status">ENDED</span>
+</div>
+
+<h3>Google Wave</h3>
+<p>An ambitious experiment in real-time online collaboration.</p>
+
+<div class="card-bottom">
+<span>2009</span><span>2012</span>
+</div>
+</div>
+</article>
+
+
+<!-- 11 -->
+
+<article class="card"
+data-name="iPod Classic"
+data-type="product"
+data-start="2001"
+data-year="2014"
+data-status="DISCONTINUED"
+data-description="Apple's iconic click-wheel music player."
+onclick="openCard(this)">
+
+<img class="card-image"
+src="https://commons.wikimedia.org/wiki/Special:Redirect/file/IPod_classic.png"
+alt="iPod Classic">
+
+<div class="card-content">
+<div class="card-top">
+<span class="card-type">PRODUCT</span>
+<span class="card-status">DISCONTINUED</span>
+</div>
+
+<h3>iPod Classic</h3>
+<p>The legendary click-wheel music player.</p>
+
+<div class="card-bottom">
+<span>2001</span><span>2014</span>
+</div>
+</div>
+</article>
+
+
+<!-- 12 -->
+
+<article class="card"
+data-name="MSN Messenger"
+data-type="app"
+data-start="1999"
+data-year="2014"
+data-status="CLOSED"
+data-description="Microsoft's famous instant messaging service."
+onclick="openCard(this)">
+
+<img class="card-image"
+src="https://commons.wikimedia.org/wiki/Special:Redirect/file/WLM_logo.svg"
+alt="MSN Messenger">
+
+<div class="card-content">
+<div class="card-top">
+<span class="card-type">APP</span>
+<span class="card-status">CLOSED</span>
+</div>
+
+<h3>MSN Messenger</h3>
+<p>Status messages, nudges and endless contact lists.</p>
+
+<div class="card-bottom">
+<span>1999</span><span>2014</span>
+</div>
+</div>
+</article>
+
+
+<!-- 13 -->
+
+<article class="card"
+data-name="MySpace"
+data-type="website"
+data-start="2003"
+data-year="2011"
+data-status="DECLINED"
+data-description="One of the defining social networks of the early 2000s."
+onclick="openCard(this)">
+
+<img class="card-image"
+src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Myspace_2010_logo.png"
+alt="MySpace">
+
+<div class="card-content">
+<div class="card-top">
+<span class="card-type">WEBSITE</span>
+<span class="card-status">DECLINED</span>
+</div>
+
+<h3>MySpace</h3>
+<p>The customizable social network of the early web.</p>
+
+<div class="card-bottom">
+<span>2003</span><span>2011</span>
+</div>
+</div>
+</article>
+
+
+<!-- 14 -->
+
+<article class="card"
+data-name="Orkut"
+data-type="website"
+data-start="2004"
+data-year="2014"
+data-status="CLOSED"
+data-description="Google's social networking service that became particularly popular in Brazil and India."
+onclick="openCard(this)">
+
+<img class="card-image"
+src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Orkut_logo.png"
+alt="Orkut">
+
+<div class="card-content">
+<div class="card-top">
+<span class="card-type">WEBSITE</span>
+<span class="card-status">CLOSED</span>
+</div>
+
+<h3>Orkut</h3>
+<p>A major social network in Brazil and India.</p>
+
+<div class="card-bottom">
+<span>2004</span><span>2014</span>
+</div>
+</div>
+</article>
+
+
+<!-- 15 -->
+
+<article class="card"
+data-name="Periscope"
+data-type="app"
+data-start="2015"
+data-year="2021"
+data-status="CLOSED"
+data-description="Twitter's live-streaming application."
+onclick="openCard(this)">
+
+<img class="card-image"
+src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Periscope_Logo.svg"
+alt="Periscope">
+
+<div class="card-content">
+<div class="card-top">
+<span class="card-type">APP</span>
+<span class="card-status">CLOSED</span>
+</div>
+
+<h3>Periscope</h3>
+<p>Twitter's live-streaming platform.</p>
+
+<div class="card-bottom">
+<span>2015</span><span>2021</span>
+</div>
+</div>
+</article>
+
+
+<!-- 16 -->
+
+<article class="card"
+data-name="QuickTime"
+data-type="software"
+data-start="1991"
+data-year="2016"
+data-status="ENDED"
+data-description="Apple's multimedia framework and player."
+onclick="openCard(this)">
+
+<img class="card-image"
+src="https://commons.wikimedia.org/wiki/Special:Redirect/file/QuickTime_Logo.svg"
+alt="QuickTime">
+
+<div class="card-content">
+<div class="card-top">
+<span class="card-type">SOFTWARE</span>
+<span class="card-status">ENDED</span>
+</div>
+
+<h3>QuickTime</h3>
+<p>Apple's once-ubiquitous multimedia technology.</p>
+
+<div class="card-bottom">
+<span>1991</span><span>2016</span>
+</div>
+</div>
+</article>
+
+
+<!-- 17 -->
+
+<article class="card"
+data-name="Shockwave"
+data-type="software"
+data-start="1995"
+data-year="2019"
+data-status="ENDED"
+data-description="Adobe Shockwave powered interactive browser content for years."
+onclick="openCard(this)">
+
+<img class="card-image"
+src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Shockwave.svg"
+alt="Shockwave">
+
+<div class="card-content">
+<div class="card-top">
+<span class="card-type">SOFTWARE</span>
+<span class="card-status">ENDED</span>
+</div>
+
+<h3>Shockwave</h3>
+<p>A browser plugin behind countless interactive experiences.</p>
+
+<div class="card-bottom">
+<span>1995</span><span>2019</span>
+</div>
+</div>
+</article>
+
+
+<!-- 18 -->
+
+<article class="card"
+data-name="StumbleUpon"
+data-type="website"
+data-start="2001"
+data-year="2018"
+data-status="CLOSED"
+data-description="A discovery service that let users stumble randomly through websites."
+onclick="openCard(this)">
+
+<img class="card-image"
+src="https://commons.wikimedia.org/wiki/Special:Redirect/file/StumbleUpon_Logo.svg"
+alt="StumbleUpon">
+
+<div class="card-content">
+<div class="card-top">
+<span class="card-type">WEBSITE</span>
+<span class="card-status">CLOSED</span>
+</div>
+
+<h3>StumbleUpon</h3>
+<p>Randomly discover the weird corners of the web.</p>
+
+<div class="card-bottom">
+<span>2001</span><span>2018</span>
+</div>
+</div>
+</article>
+
+
+<!-- 19 -->
+
+<article class="card"
+data-name="Vine"
+data-type="website"
+data-start="2013"
+data-year="2017"
+data-status="CLOSED"
+data-description="The six-second video platform."
+onclick="openCard(this)">
+
+<img class="card-image"
+src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Vine_wordmark.svg"
+alt="Vine">
+
+<div class="card-content">
+<div class="card-top">
+<span class="card-type">WEBSITE</span>
+<span class="card-status">CLOSED</span>
+</div>
+
+<h3>Vine</h3>
+<p>Six-second videos that shaped internet culture.</p>
+
+<div class="card-bottom">
+<span>2013</span><span>2017</span>
+</div>
+</div>
+</article>
+
+
+<!-- 20 -->
+
+<article class="card"
+data-name="Windows Phone"
+data-type="product"
+data-start="2010"
+data-year="2019"
+data-status="ENDED"
+data-description="Microsoft's mobile operating system and smartphone platform."
+onclick="openCard(this)">
+
+<img class="card-image"
+src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Windows_Phone_7_logo_and_wordmark.svg"
+alt="Windows Phone">
+
+<div class="card-content">
+<div class="card-top">
+<span class="card-type">PRODUCT</span>
+<span class="card-status">ENDED</span>
+</div>
+
+<h3>Windows Phone</h3>
+<p>Microsoft's attempt at a major mobile platform.</p>
+
+<div class="card-bottom">
+<span>2010</span><span>2019</span>
+</div>
+</div>
+</article>
+
+
+<!-- 21 -->
+
+<article class="card"
+data-name="Yahoo Messenger"
+data-type="app"
+data-start="1998"
+data-year="2018"
+data-status="CLOSED"
+data-description="Yahoo's long-running instant messaging service."
+onclick="openCard(this)">
+
+<img class="card-image"
+src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Yahoo%21_Messenger_Text_Logo.svg"
+alt="Yahoo Messenger">
+
+<div class="card-content">
+<div class="card-top">
+<span class="card-type">APP</span>
+<span class="card-status">CLOSED</span>
+</div>
+
+<h3>Yahoo Messenger</h3>
+<p>A classic instant messaging service.</p>
+
+<div class="card-bottom">
+<span>1998</span><span>2018</span>
+</div>
+</div>
+</article>
+
+
+<!-- 22 -->
+
+<article class="card"
+data-name="Google Duo"
+data-type="app"
+data-start="2016"
+data-year="2022"
+data-status="MERGED"
+data-description="Google's video calling service that was eventually merged into Google Meet."
+onclick="openCard(this)">
+
+<img class="card-image"
+src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Google_Duo_icon.svg"
+alt="Google Duo">
+
+<div class="card-content">
+<div class="card-top">
+<span class="card-type">APP</span>
+<span class="card-status">MERGED</span>
+</div>
+
+<h3>Google Duo</h3>
+<p>Google's video-calling app before its merger.</p>
+
+<div class="card-bottom">
+<span>2016</span><span>2022</span>
+</div>
+</div>
+</article>
+
+
+<!-- 23 -->
+
+<article class="card"
+data-name="Google+ Icon"
+data-type="culture"
+data-start="2011"
+data-year="2019"
+data-status="ARCHIVED"
+data-description="The recognizable visual identity of Google+."
+onclick="openCard(this)">
+
+<img class="card-image"
+src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Google_Plus_icon_%282011-2015%29.svg"
+alt="Google Plus icon">
+
+<div class="card-content">
+<div class="card-top">
+<span class="card-type">CULTURE</span>
+<span class="card-status">ARCHIVED</span>
+</div>
+
+<h3>Google+ Icon</h3>
+<p>A recognizable symbol of the old Google social era.</p>
+
+<div class="card-bottom">
+<span>2011</span><span>2019</span>
+</div>
+</div>
+</article>
+
+
+<!-- 24 -->
+
+<article class="card"
+data-name="Adobe Flash"
+data-type="software"
+data-start="1996"
+data-year="2020"
+data-status="ENDED"
+data-description="Browser technology behind countless games, animations and interactive websites."
+onclick="openCard(this)">
+
+<img class="card-image"
+src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Adobe_Flash_Media_Server_v2.0_logo.png"
+alt="Adobe Flash">
+
+<div class="card-content">
+<div class="card-top">
+<span class="card-type">SOFTWARE</span>
+<span class="card-status">ENDED</span>
+</div>
+
+<h3>Adobe Flash</h3>
+<p>The technology behind countless old browser experiences.</p>
+
+<div class="card-bottom">
+<span>1996</span><span>2020</span>
+</div>
+</div>
+</article>
+
+
+</div>
+
+
+<div class="empty" id="empty">
+    <h3>No results found.</h3>
+    <p>Try another search or category.</p>
+</div>
+
+
+<div id="timeline">
+
+<div class="section-title">
+    <h2>Timeline</h2>
+    <span>DIGITAL DEATHS</span>
+</div>
+
+<div class="timeline">
+
+<div class="timeline-item">
+<div class="timeline-year">1991</div>
+<h3>QuickTime arrives</h3>
+<p>Apple introduces its multimedia framework.</p>
+</div>
+
+<div class="timeline-item">
+<div class="timeline-year">1997</div>
+<h3>AIM begins</h3>
+<p>Instant messaging becomes a major part of online culture.</p>
+</div>
+
+<div class="timeline-item">
+<div class="timeline-year">2001</div>
+<h3>StumbleUpon begins</h3>
+<p>Random web discovery becomes a thing.</p>
+</div>
+
+<div class="timeline-item">
+<div class="timeline-year">2005</div>
+<h3>Club Penguin and Google Reader era</h3>
+<p>Online communities and RSS readers become everyday tools.</p>
+</div>
+
+<div class="timeline-item">
+<div class="timeline-year">2013</div>
+<h3>Vine launches</h3>
+<p>Six-second video changes internet comedy and creativity.</p>
+</div>
+
+<div class="timeline-item">
+<div class="timeline-year">2017</div>
+<h3>Vine and Club Penguin close</h3>
+<p>Two major pieces of internet culture disappear.</p>
+</div>
+
+<div class="timeline-item">
+<div class="timeline-year">2019</div>
+<h3>Google+ and Shockwave end</h3>
+<p>Another generation of internet services reaches the end.</p>
+</div>
+
+<div class="timeline-item">
+<div class="timeline-year">2020</div>
+<h3>Flash reaches end of life</h3>
+<p>A huge chapter of browser history comes to an end.</p>
+</div>
+
+</div>
+</div>
+
+</main>
+
+
+<div class="modal" id="modal">
+
+<div class="modal-box">
+
+<button class="close" onclick="closeModal()">×</button>
+
+<img id="modalImage"
+class="modal-image"
+src=""
+alt="">
+
+<div class="modal-content">
+
+<div id="modalType" class="modal-type"></div>
+
+<h2 id="modalTitle"></h2>
+
+<p id="modalDescription" class="modal-description"></p>
+
+<div class="modal-info">
+
+<div class="info">
+<strong id="modalStart"></strong>
+<span>STARTED</span>
+</div>
+
+<div class="info">
+<strong id="modalEnd"></strong>
+<span>ENDED</span>
+</div>
+
+<div class="info">
+<strong id="modalStatus"></strong>
+<span>STATUS</span>
+</div>
+
+</div>
+
+</div>
+</div>
+</div>
+
+
+<footer id="about">
+DEAD — A DIGITAL ARCHIVE OF THINGS THAT ARE GONE
+</footer>
+
+
+<script>
+
+let activeFilter="all";
+
+
+function setFilter(button){
+
+    document.querySelectorAll(".filter")
+    .forEach(btn=>btn.classList.remove("active"));
+
+    button.classList.add("active");
+
+    activeFilter=button.dataset.filter;
+
+    filterCards();
+}
+
+
+function filterCards(){
+
+    const query=
+        document.getElementById("search")
+        .value
+        .toLowerCase()
+        .trim();
+
+    const cards=[
+        ...document.querySelectorAll(".card")
+    ];
+
+    let visible=0;
+
+    cards.forEach(card=>{
+
+        const name=
+            card.dataset.name.toLowerCase();
+
+        const type=
+            card.dataset.type;
+
+        const text=
+            card.innerText.toLowerCase();
+
+        const categoryMatch=
+            activeFilter==="all" ||
+            type===activeFilter;
+
+        const searchMatch=
+            !query ||
+            name.includes(query) ||
+            text.includes(query);
+
+        if(categoryMatch && searchMatch){
+
+            card.style.display="";
+            visible++;
+
+        }else{
+
+            card.style.display="none";
+
+        }
+
+    });
+
+    document.getElementById("resultCount")
+    .textContent=
+        visible+
+        (visible===1
+            ?" ENTRY"
+            :" ENTRIES");
+
+    document.getElementById("empty")
+    .style.display=
+        visible===0
+            ?"block"
+            :"none";
+}
+
+
+function sortCards(){
+
+    const mode=
+        document.getElementById("sort").value;
+
+    const grid=
+        document.getElementById("grid");
+
+    const cards=[
+        ...grid.querySelectorAll(".card")
+    ];
+
+    if(mode==="az"){
+
+        cards.sort((a,b)=>
+            a.dataset.name
+            .localeCompare(b.dataset.name)
+        );
+
+    }
+
+    if(mode==="za"){
+
+        cards.sort((a,b)=>
+            b.dataset.name
+            .localeCompare(a.dataset.name)
+        );
+
+    }
+
+    if(mode==="old"){
+
+        cards.sort((a,b)=>
+            Number(a.dataset.start)-
+            Number(b.dataset.start)
+        );
+
+    }
+
+    if(mode==="new"){
+
+        cards.sort((a,b)=>
+            Number(b.dataset.start)-
+            Number(a.dataset.start)
+        );
+
+    }
+
+    cards.forEach(card=>
+        grid.appendChild(card)
+    );
+
+    filterCards();
+}
+
+
+function openCard(card){
+
+    const image=
+        card.querySelector("img");
+
+    document.getElementById("modalImage")
+    .src=image.src;
+
+    document.getElementById("modalImage")
+    .alt=image.alt;
+
+    document.getElementById("modalTitle")
+    .textContent=
+        card.dataset.name;
+
+    document.getElementById("modalType")
+    .textContent=
+        card.dataset.type.toUpperCase();
+
+    document.getElementById("modalDescription")
+    .textContent=
+        card.dataset.description;
+
+    document.getElementById("modalStart")
+    .textContent=
+        card.dataset.start;
+
+    document.getElementById("modalEnd")
+    .textContent=
+        card.dataset.year;
+
+    document.getElementById("modalStatus")
+    .textContent=
+        card.dataset.status;
+
+    document.getElementById("modal")
+    .classList.add("show");
+
+    document.body.style.overflow="hidden";
+}
+
+
+function closeModal(){
+
+    document.getElementById("modal")
+    .classList.remove("show");
+
+    document.body.style.overflow="";
+}
+
+
+document.getElementById("modal")
+.addEventListener("click",event=>{
+
+    if(event.target.id==="modal"){
+        closeModal();
+    }
+
+});
+
+
+document.addEventListener("keydown",event=>{
+
+    if(event.key==="Escape"){
+        closeModal();
+    }
+
+});
+
+
+filterCards();
+
+</script>
+
+</body>
+</html>
